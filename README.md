@@ -93,7 +93,19 @@ Coolify allows you to deploy applications directly on the host using **Nixpacks*
    If Coolify builds the project using Nixpacks, it sets up an isolated environment on the host. We have created a `nixpacks.toml` at the root of the repository to automate this setup:
    ```toml
    [phases.setup]
-   aptPkgs = ["libpango-1.0-0", "libpangoft2-1.0-0", "libharfbuzz0b", "libcairo2", "libglib2.0-0", "libffi-dev", "shared-mime-info"]
+   aptPkgs = [
+       "libpango-1.0-0",
+       "libpangoft2-1.0-0",
+       "libharfbuzz0b",
+       "libcairo2",
+       "libglib2.0-0",
+       "libffi-dev",
+       "shared-mime-info",
+       "weasyprint"
+   ]
+
+   [variables]
+   LD_LIBRARY_PATH = "/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH"
 
    [start]
    cmd = "uvicorn app.main:app --host 0.0.0.0 --port 8000"
