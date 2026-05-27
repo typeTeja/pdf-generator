@@ -62,6 +62,7 @@ sudo apt install -y \
     libpangoft2-1.0-0 \
     libharfbuzz0b \
     libcairo2 \
+    libglib2.0-0 \
     libffi-dev \
     shared-mime-info
 ```
@@ -89,10 +90,13 @@ Coolify allows you to deploy applications directly on the host using **Nixpacks*
    ```
 4. **Port:** `8000`
 5. **System Dependencies in Coolify (Nixpacks configuration):**
-   If Coolify builds the project using Nixpacks, it sets up an isolated environment on the host. You can instruct Nixpacks to install the necessary packages. In the Coolify UI under **Nixpacks Configuration** (or inside a `nixpacks.toml` file at the root):
+   If Coolify builds the project using Nixpacks, it sets up an isolated environment on the host. We have created a `nixpacks.toml` at the root of the repository to automate this setup:
    ```toml
    [phases.setup]
-   aptPkgs = ["libpango-1.0-0", "libpangoft2-1.0-0", "libharfbuzz0b", "libcairo2", "libffi-dev", "shared-mime-info"]
+   aptPkgs = ["libpango-1.0-0", "libpangoft2-1.0-0", "libharfbuzz0b", "libcairo2", "libglib2.0-0", "libffi-dev", "shared-mime-info"]
+
+   [start]
+   cmd = "uvicorn app.main:app --host 0.0.0.0 --port 8000"
    ```
 
 ---
@@ -183,10 +187,10 @@ To expose your microservice over HTTP/HTTPS with custom domain mapping, configur
 ## 6. Troubleshooting Guide
 
 ### A. Missing Cairo/Pango Libraries (`dlopen() failed`, `weasyprint.env.can_import`)
-* **Symptom:** API fails at start, `/health` endpoint shows WeasyPrint status as `degraded` or `Unavailable`, or logs show `OSError: cannot load library 'gobject-2.0'`.
+* **Symptom:** API fails at start, `/health` endpoint shows WeasyPrint status as `degraded` or `Unavailable`, or logs show `OSError: cannot load library 'gobject-2.0'` or `cannot load library 'libgobject-2.0-0'`.
 * **Fix:** 
-  1. Make sure you ran `sudo apt install -y libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz0b libcairo2 libffi-dev shared-mime-info`.
-  2. If deploying via Nixpacks/Coolify, verify the dependencies are specified in `nixpacks.toml` or in the Coolify configuration UI environment variables, as build environments run in containers that must bundle these packages.
+  1. Make sure you ran `sudo apt install -y libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz0b libcairo2 libglib2.0-0 libffi-dev shared-mime-info`.
+  2. If deploying via Nixpacks/Coolify, verify the dependencies (specifically `libglib2.0-0`) are specified in `nixpacks.toml` or in the Coolify configuration UI setup phase, as the environment needs GLib to load gobject.
 
 ### B. Font Rendering Issues (Squares instead of letters, bad text spacing)
 * **Symptom:** The generated PDF displays empty squares `[] [] []` instead of characters, or formatting is misaligned.
