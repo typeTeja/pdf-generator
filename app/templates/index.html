@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admission Letter Portal</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* CSS resets and custom properties */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at 50% 50%, #0f172a 0%, #020617 100%);
+            color: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* Background decorative glowing circles */
+        .glow-circle {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 1;
+            opacity: 0.15;
+        }
+        .glow-1 {
+            width: 400px;
+            height: 400px;
+            background: #0284c7;
+            top: -100px;
+            left: -100px;
+        }
+        .glow-2 {
+            width: 500px;
+            height: 500px;
+            background: #6366f1;
+            bottom: -150px;
+            right: -100px;
+        }
+        
+        /* Card styling - Glassmorphism */
+        .card {
+            background: rgba(30, 41, 59, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 40px;
+            width: 100%;
+            max-width: 460px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            z-index: 10;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(99, 102, 241, 0.1);
+        }
+        
+        /* Logo and Headings */
+        .logo-box {
+            display: inline-flex;
+            margin-bottom: 20px;
+        }
+        .title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .subtitle {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-bottom: 35px;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+        
+        /* Form & Inputs */
+        .form-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+        .label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #94a3b8;
+            margin-bottom: 8px;
+            padding-left: 4px;
+        }
+        .input-wrapper {
+            position: relative;
+        }
+        .input {
+            width: 100%;
+            padding: 14px 16px 14px 44px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        .input:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+            background: rgba(15, 23, 42, 0.8);
+        }
+        .input-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            transition: color 0.3s ease;
+        }
+        .input:focus + .input-icon {
+            color: #6366f1;
+        }
+        
+        /* Dynamic Button */
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+        .btn:hover {
+            background: linear-gradient(135deg, #818cf8 0%, #4338ca 100%);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+            transform: translateY(-1px);
+        }
+        .btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.2);
+        }
+        
+        /* Footer text inside card */
+        .card-footer {
+            margin-top: 25px;
+            font-size: 11px;
+            color: #64748b;
+        }
+        .card-footer a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        .card-footer a:hover {
+            color: #6366f1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glow-circle glow-1"></div>
+    <div class="glow-circle glow-2"></div>
+
+    <div class="card">
+        <div class="logo-box">
+            <!-- App Logo SVG -->
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="48" height="48" rx="10" fill="#1e293b" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+                <path d="M24 11L12 17.4L24 23.8L36 17.4L24 11Z" fill="#6366f1"/>
+                <path d="M12 22.6V29L24 35.4L36 29V22.6L24 29L12 22.6Z" fill="#6366f1" fill-opacity="0.8"/>
+                <path d="M24 14.2L15.2 18.9L24 23.6L32.8 18.9L24 14.2Z" fill="#f8fafc"/>
+            </svg>
+        </div>
+        
+        <h2 class="title">Admission Letter Portal</h2>
+        <p class="subtitle">Enter the candidate's name to render and download the high-quality admission offer letter PDF.</p>
+        
+        <form id="pdfForm" onsubmit="downloadPDF(event)">
+            <div class="form-group">
+                <label for="studentName" class="label">Candidate Full Name</label>
+                <div class="input-wrapper">
+                    <input type="text" id="studentName" class="input" placeholder="e.g. Alex Mercer" required autocomplete="off">
+                    <!-- User icon SVG -->
+                    <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn">
+                <span>Generate & Download</span>
+                <!-- Download icon SVG -->
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+            </button>
+        </form>
+        
+        <div class="card-footer">
+            Powered by WeasyPrint & FastAPI • <a href="/health" target="_blank">Service Health</a>
+        </div>
+    </div>
+
+    <script>
+        function downloadPDF(event) {
+            event.preventDefault();
+            const name = document.getElementById('studentName').value.trim();
+            if (!name) return;
+            
+            // Redirect to the generation endpoint with the name as query parameter
+            const downloadUrl = `/test-pdf?name=${encodeURIComponent(name)}`;
+            window.location.href = downloadUrl;
+        }
+    </script>
+</body>
+</html>

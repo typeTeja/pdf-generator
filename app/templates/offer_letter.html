@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admission Offer Letter</title>
+    <style>
+        /* CSS Paged Media for WeasyPrint */
+        @page {
+            size: A4;
+            margin: 24mm 20mm 24mm 20mm;
+            @bottom-right {
+                content: "Page " counter(page) " of " counter(pages);
+                font-family: 'Inter', system-ui, -apple-system, sans-serif;
+                font-size: 8pt;
+                color: #94A3B8;
+            }
+            @bottom-left {
+                content: "Antigravity Institute of Technology • Admission Office";
+                font-family: 'Inter', system-ui, -apple-system, sans-serif;
+                font-size: 8pt;
+                color: #94A3B8;
+            }
+        }
+
+        /* General Typography and Reset */
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            color: #1E293B;
+            line-height: 1.5;
+            margin: 0;
+            padding: 0;
+            font-size: 10.5pt;
+        }
+
+        /* Color Palette & Accents */
+        .text-primary { color: #0F172A; }
+        .text-secondary { color: #475569; }
+        .text-accent { color: #0284C7; }
+
+        /* Header / Letterhead Design */
+        .letterhead {
+            border-bottom: 2px solid #E2E8F0;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            display: block;
+        }
+
+        .header-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .header-table td {
+            vertical-align: middle;
+            border: none;
+            padding: 0;
+        }
+
+        .logo-container {
+            width: 70px;
+        }
+
+        .college-details {
+            padding-left: 15px;
+        }
+
+        .college-title {
+            font-family: 'Outfit', 'Inter', sans-serif;
+            font-size: 18pt;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: #0F172A;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .college-subtitle {
+            font-size: 9pt;
+            color: #64748B;
+            margin: 2px 0 0 0;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .college-contact {
+            text-align: right;
+            font-size: 8.5pt;
+            color: #64748B;
+            line-height: 1.4;
+        }
+
+        /* Meta details table (Date, Application #) */
+        .meta-table {
+            width: 100%;
+            margin-bottom: 25px;
+            border-collapse: collapse;
+        }
+
+        .meta-table td {
+            padding: 2px 0;
+            border: none;
+        }
+
+        .meta-label {
+            font-weight: 600;
+            color: #475569;
+            width: 15%;
+        }
+
+        .meta-val {
+            color: #0F172A;
+        }
+
+        .meta-date {
+            text-align: right;
+            color: #64748B;
+        }
+
+        /* Salutation & Body Text */
+        .salutation {
+            font-size: 11pt;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #0F172A;
+        }
+
+        .letter-body {
+            text-align: justify;
+            margin-bottom: 25px;
+        }
+
+        .letter-body p {
+            margin: 0 0 12px 0;
+        }
+
+        .highlight-box {
+            background-color: #F8FAFC;
+            border-left: 4px solid #0284C7;
+            padding: 12px 16px;
+            margin: 15px 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .highlight-box p {
+            margin: 0;
+            font-weight: 500;
+        }
+
+        /* Fee Table Section */
+        .section-title {
+            font-family: 'Outfit', 'Inter', sans-serif;
+            font-size: 12pt;
+            font-weight: 700;
+            color: #0F172A;
+            margin: 20px 0 8px 0;
+            border-bottom: 1px solid #E2E8F0;
+            padding-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .fee-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .fee-table th {
+            background-color: #F1F5F9;
+            color: #475569;
+            font-weight: 600;
+            text-align: left;
+            padding: 8px 12px;
+            font-size: 9pt;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            border-bottom: 2px solid #E2E8F0;
+        }
+
+        .fee-table td {
+            padding: 8px 12px;
+            border-bottom: 1px solid #F1F5F9;
+            font-size: 9.5pt;
+        }
+
+        .fee-table tr.total-row td {
+            font-weight: 700;
+            background-color: #F8FAFC;
+            border-top: 2px solid #E2E8F0;
+            border-bottom: 2px solid #E2E8F0;
+            color: #0F172A;
+        }
+
+        .fee-amount {
+            text-align: right;
+        }
+
+        /* Sign-off & Footer section */
+        .signoff-section {
+            width: 100%;
+            margin-top: 30px;
+            border-collapse: collapse;
+        }
+
+        .signoff-section td {
+            vertical-align: bottom;
+            border: none;
+            padding: 0;
+        }
+
+        .signature-area {
+            width: 50%;
+        }
+
+        .signature-placeholder {
+            margin-bottom: 5px;
+        }
+
+        .signature-title {
+            font-size: 9.5pt;
+            font-weight: 600;
+            color: #0F172A;
+        }
+
+        .signature-sub {
+            font-size: 8.5pt;
+            color: #64748B;
+        }
+
+        .qr-area {
+            width: 50%;
+            text-align: right;
+        }
+
+        .qr-container {
+            display: inline-block;
+            text-align: center;
+        }
+
+        .qr-code {
+            width: 70px;
+            height: 70px;
+        }
+
+        .qr-caption {
+            font-size: 7.5pt;
+            color: #94A3B8;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Letterhead -->
+    <div class="letterhead">
+        <table class="header-table">
+            <tr>
+                <td class="logo-container">
+                    <!-- Premium vector-looking College Logo (SVG) -->
+                    <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="60" height="60" rx="12" fill="#0F172A"/>
+                        <path d="M30 14L15 22L30 30L45 22L30 14Z" fill="#0284C7"/>
+                        <path d="M15 28.5V36.5L30 44.5L45 36.5V28.5L30 36.5L15 28.5Z" fill="#0284C7" fill-opacity="0.8"/>
+                        <path d="M30 18L19 23.86L30 29.73L41 23.86L30 18Z" fill="#F8FAFC"/>
+                    </svg>
+                </td>
+                <td class="college-details">
+                    <h1 class="college-title">{{ college_name }}</h1>
+                    <div class="college-subtitle">Office of Admissions & Financial Aid</div>
+                </td>
+                <td class="college-contact">
+                    100 Innovation Way<br>
+                    Silicon Valley, CA 94025<br>
+                    admissions@antigravity.edu
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Metadata Details -->
+    <table class="meta-table">
+        <tr>
+            <td class="meta-label">Date:</td>
+            <td class="meta-val">{{ issue_date }}</td>
+            <td class="meta-date"><strong>Ref:</strong> {{ application_number }}</td>
+        </tr>
+        <tr>
+            <td class="meta-label">Candidate:</td>
+            <td class="meta-val"><strong>{{ student_name }}</strong></td>
+            <td></td>
+        </tr>
+    </table>
+
+    <!-- Salutation -->
+    <div class="salutation">Dear {{ student_name }},</div>
+
+    <!-- Letter Body -->
+    <div class="letter-body">
+        <p>
+            On behalf of the Admissions Committee, it is my absolute pleasure to congratulate you on your admission to the <strong>{{ course_name }}</strong> program at the {{ college_name }} for the academic year <strong>{{ academic_year }}</strong>.
+        </p>
+        <p>
+            Our admissions process is highly selective, and you were chosen from a global pool of outstanding applicants due to your exceptional academic achievements, leadership potential, and technical drive. We believe your background makes you a perfect fit for our rigorous, innovation-oriented environment.
+        </p>
+        <p>
+            Please review the details below regarding your academic program and the corresponding fee structure.
+        </p>
+        
+        <div class="highlight-box">
+            <p>
+                To secure your enrollment, please submit your acceptance form and deposit payment on or before <strong>{{ admission_deadline }}</strong>.
+            </p>
+        </div>
+    </div>
+
+    <!-- Fee Structure Table -->
+    <div class="section-title">Program Fee Structure</div>
+    <table class="fee-table">
+        <thead>
+            <tr>
+                <th>Fee Component Description</th>
+                <th class="fee-amount" style="width: 30%;">Amount (USD)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for fee in fees %}
+            <tr>
+                <td>{{ fee.item }}</td>
+                <td class="fee-amount">{{ fee.amount }}</td>
+            </tr>
+            {% endfor %}
+            <tr class="total-row">
+                <td>Total Cost of Attendance (Per Semester)</td>
+                <td class="fee-amount">{{ total_fee }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Sign-off & Vector Signature & QR Code -->
+    <table class="signoff-section">
+        <tr>
+            <td class="signature-area">
+                <div class="signature-placeholder">
+                    <!-- Stylized Principal Signature Vector (SVG) -->
+                    <svg width="150" height="50" viewBox="0 0 150 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10 35C25 35 35 15 45 15C55 15 50 40 60 40C70 40 85 10 95 10C105 10 110 30 130 30" stroke="#1E3A8A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M35 25L115 22" stroke="#1E3A8A" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div class="signature-title">Dr. Eleanor Vance</div>
+                <div class="signature-sub">Dean of Admissions & Student Affairs</div>
+            </td>
+            <td class="qr-area">
+                <div class="qr-container">
+                    <!-- Custom SVG Mock QR Code -->
+                    <svg class="qr-code" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Outlines and background -->
+                        <rect width="100" height="100" fill="#F8FAFC"/>
+                        <rect x="5" y="5" width="90" height="90" rx="4" stroke="#E2E8F0" stroke-width="2"/>
+                        
+                        <!-- Top-Left Finder Pattern -->
+                        <rect x="15" y="15" width="25" height="25" fill="#0F172A"/>
+                        <rect x="20" y="20" width="15" height="15" fill="#F8FAFC"/>
+                        <rect x="24" y="24" width="7" height="7" fill="#0F172A"/>
+                        
+                        <!-- Top-Right Finder Pattern -->
+                        <rect x="60" y="15" width="25" height="25" fill="#0F172A"/>
+                        <rect x="65" y="20" width="15" height="15" fill="#F8FAFC"/>
+                        <rect x="69" y="24" width="7" height="7" fill="#0F172A"/>
+                        
+                        <!-- Bottom-Left Finder Pattern -->
+                        <rect x="15" y="60" width="25" height="25" fill="#0F172A"/>
+                        <rect x="20" y="65" width="15" height="15" fill="#F8FAFC"/>
+                        <rect x="24" y="69" width="7" height="7" fill="#0F172A"/>
+                        
+                        <!-- Mock Data bits (random rects) -->
+                        <rect x="45" y="15" width="5" height="10" fill="#0F172A"/>
+                        <rect x="52" y="15" width="5" height="5" fill="#0F172A"/>
+                        
+                        <rect x="45" y="28" width="10" height="5" fill="#0F172A"/>
+                        <rect x="52" y="35" width="5" height="10" fill="#0F172A"/>
+                        
+                        <rect x="15" y="45" width="10" height="5" fill="#0F172A"/>
+                        <rect x="28" y="45" width="5" height="10" fill="#0F172A"/>
+                        
+                        <rect x="60" y="45" width="15" height="5" fill="#0F172A"/>
+                        <rect x="80" y="45" width="5" height="5" fill="#0F172A"/>
+                        
+                        <rect x="45" y="60" width="5" height="15" fill="#0F172A"/>
+                        <rect x="52" y="65" width="10" height="5" fill="#0F172A"/>
+                        <rect x="52" y="75" width="5" height="10" fill="#0F172A"/>
+                        
+                        <rect x="65" y="60" width="5" height="10" fill="#0F172A"/>
+                        <rect x="75" y="65" width="10" height="5" fill="#0F172A"/>
+                        <rect x="75" y="75" width="10" height="10" fill="#0F172A"/>
+                        
+                        <rect x="65" y="80" width="5" height="5" fill="#0F172A"/>
+                    </svg>
+                    <div class="qr-caption">Verify Document Integrity</div>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+</body>
+</html>
