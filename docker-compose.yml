@@ -1,0 +1,11 @@
+services:
+  web:
+    build: .
+    container_name: pdf-generator
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app/generated:/app/app/generated
+    environment:
+      - PORT=8000
+    restart: unless-stopped

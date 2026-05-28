@@ -1,6 +1,6 @@
 # WeasyPrint PDF Microservice
 
-A lightweight, production-ready Python FastAPI microservice to generate high-quality PDF documents using Jinja2 templates and WeasyPrint. This service is designed to verify that WeasyPrint runs correctly when deployed on an Ubuntu VPS or Coolify *without* Docker.
+A lightweight, production-ready Python FastAPI microservice to generate high-quality PDF documents using Jinja2 templates and WeasyPrint. This service is fully containerized using Docker, making it easy to deploy on any VPS, Coolify, or containerized platform with all system-level dependencies pre-configured.
 
 ---
 
@@ -77,29 +77,32 @@ sudo fc-cache -fv
 
 ---
 
-## 3. Coolify Deployment Instructions
+## 3. Docker Deployment & Coolify Setup
 
-Coolify allows you to deploy applications directly on the host using **Nixpacks** or **Buildpacks** without requiring Docker.
+This repository contains a pre-configured `Dockerfile` and `docker-compose.yml` to package all system libraries required by WeasyPrint (like Pango, Cairo, etc.) and system fonts.
 
-### Configuration Settings
-1. **Repository:** Link your Git repository.
-2. **Build Pack:** Select `Nixpacks` (recommended) or `Static/Python` buildpack.
-3. **Start Command:**
-   ```bash
-   uvicorn app.main:app --host 0.0.0.0 --port 8000
-   ```
-4. **Port:** `8000`
-5. **System Dependencies in Coolify (Nixpacks configuration):**
-   If Coolify builds the project using Nixpacks, it sets up an isolated environment on the host. We have created a `nixpacks.toml` at the root of the repository to automate this setup:
-   ```toml
-   [phases.setup]
-   aptPkgs = [
-       "weasyprint"
-   ]
+### A. Local Execution with Docker Compose
+To build and run the application locally inside Docker:
+```bash
+docker compose up --build -d
+```
+The API will be available at `http://localhost:8000`.
 
-   [start]
-   cmd = "uvicorn app.main:app --host 0.0.0.0 --port 8000"
-   ```
+### B. Local Execution with Docker CLI
+If you want to run it without compose:
+```bash
+# Build the image
+docker build -t pdf-generator .
+
+# Run the container
+docker run -d -p 8000:8000 --name pdf-generator-container pdf-generator
+```
+
+### C. Coolify / VPS Docker Deployment
+1. **Repository:** Link your Git repository in Coolify.
+2. **Build Pack:** Select **Dockerfile**. Coolify will automatically detect the root `Dockerfile` and build the container image.
+3. **Port:** Set the destination port to `8000`.
+4. **Volume (Optional):** You can mount `/app/app/generated` to persist the generated PDF files on the host system.
 
 ---
 
@@ -191,8 +194,8 @@ To expose your microservice over HTTP/HTTPS with custom domain mapping, configur
 ### A. Missing Cairo/Pango Libraries (`dlopen() failed`, `weasyprint.env.can_import`)
 * **Symptom:** API fails at start, `/health` endpoint shows WeasyPrint status as `degraded` or `Unavailable`, or logs show `OSError: cannot load library 'gobject-2.0'` or `cannot load library 'libgobject-2.0-0'`.
 * **Fix:** 
-  1. Make sure you ran `sudo apt install -y libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz0b libcairo2 libglib2.0-0 libffi-dev shared-mime-info`.
-  2. If deploying via Nixpacks/Coolify, verify the dependencies (specifically `libglib2.0-0`) are specified in `nixpacks.toml` or in the Coolify configuration UI setup phase, as the environment needs GLib to load gobject.
+  1. For non-Docker deployments, make sure you ran `sudo apt install -y libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz0b libcairo2 libglib2.0-0 libffi-dev shared-mime-info`.
+  2. For Docker deployments, ensure that the Dockerfile successfully installs WeasyPrint's system dependencies. The provided Dockerfile does this automatically.
 
 ### B. Font Rendering Issues (Squares instead of letters, bad text spacing)
 * **Symptom:** The generated PDF displays empty squares `[] [] []` instead of characters, or formatting is misaligned.
